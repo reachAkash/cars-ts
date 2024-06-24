@@ -1,33 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: "Montserrat", "sans-serif" !important;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.navbar-clippath {
+  clip-path: polygon(
+    50% 0%,
+    100% 0,
+    100% 58%,
+    90% 58%,
+    58% 58%,
+    20% 58%,
+    7% 34%,
+    0 0,
+    10% 0
+  );
+}
+
+.sidebar {
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.sidebar::-webkit-scrollbar {
+  scroll-behavior: smooth;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Adjust gap as needed */
+}
+
+.checkbox-container input[type="checkbox"] {
+  appearance: none; /* Hide default appearance */
+  width: 15px;
+  height: 15px;
+  background-color: white; /* Default background color */
+  border: 1px solid #ccc;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  position: relative; /* Position relative for pseudo-element */
+}
+
+.checkbox-container input[type="checkbox"]:checked {
+  background-color: red; /* Change background color when checked */
+}
+
+.checkbox-container input[type="checkbox"]:checked::before {
+  content: "";
+  width: 10px;
+  height: 5px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.modal-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+  background-color: #e02d2d; /* Set the color of the thumb */
+  border-radius: 4px; /* Optional: Round the corners of the thumb */
+}
+
+.modal-container::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Set the color of the track */
 }
