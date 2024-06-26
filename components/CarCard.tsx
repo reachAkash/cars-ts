@@ -46,7 +46,7 @@ const CarCard: React.FC = () => {
             <span className="text-xs">25,000</span>
           </div>
         </div>
-        <div className="px-4 space-y-1">
+        <div className="px-4 space-y-2 md:space-y-1">
           <div className="flex text-xs items-center justify-between">
             <span>Financing Available</span>
             <span>$6,500</span>

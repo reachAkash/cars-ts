@@ -30,9 +30,13 @@ const Home: React.FC = () => {
           <span className="flex font-semibold items-center justify-between">
             Recently Added <DownArrowIcon />
           </span>
+          <span className="flex items-center lg:hidden">
+            <HorizontalIcon />
+            <VerticalIcon />
+          </span>
         </div>
       </div>
-      <div className="flex justify-end space-x-1 rounded-md border px-4 py-2 border-secondary">
+      <div className="hidden lg:flex justify-end space-x-1 rounded-md border px-4 py-2 border-secondary">
         <HorizontalIcon />
         <VerticalIcon />
       </div>

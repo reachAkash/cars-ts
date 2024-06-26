@@ -13,16 +13,16 @@ const config = {
     container: {
       center: true,
       padding: "2rem",
+    },
+    extend: {
       screens: {
         xs: "480px",
         sm: "509px",
         md: "650px",
-        lg: "1024px",
+        lg: "1020px",
         xl: "1280px",
         "2xl": "1536px",
       },
-    },
-    extend: {
       colors: {
         primary: "#e02d2d",
       },

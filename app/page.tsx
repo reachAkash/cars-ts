@@ -7,7 +7,7 @@ const Page = () => {
   return (
     <div className="">
       <Navbar />
-      <div className="flex flex-col lg:flex-row px-4 md:px-8 xl:px-[4rem] gap-0 md:gap-8">
+      <div className="flex flex-col lg:flex-row px-4 md:px-8 xl:px-[4rem] gap-0 lg:gap-8">
         <Sidebar />
         <Home />
       </div>

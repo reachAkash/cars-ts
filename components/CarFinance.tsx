@@ -4,11 +4,11 @@ import CarFinanceIcon from "./icons/CarFinance";
 
 const CarFinance: React.FC = () => {
   return (
-    <div className="bg-primary px-6 flex flex-col justify-between py-6 rounded-md shadow-md">
+    <div className="bg-primary px-6 flex flex-col justify-between py-4 lg:py-6 rounded-md shadow-md">
       <CarFinanceIcon />
-      <div className="text-white">
+      <div className="text-white text-lg md:text-xl">
         Find out if you&apos;re eligible for <Wordbreak />
-        <span className="font-semibold text-lg md:text-xl lg:text-3xl">
+        <span className="font-semibold text-lg md:text-3xl lg:text-3xl">
           Car Finance
         </span>{" "}
         in minutes, with no impact on your credit score.
