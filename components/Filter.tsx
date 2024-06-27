@@ -10,20 +10,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { store } from "@/store";
 import { RootState } from "@/store";
 import axiosInstance from "@/axiosConfig";
-import { setCar } from "@/slices/carSlice";
+import { setCar, startLoading, totalCars } from "@/slices/carSlice";
 
 interface FilterProps {
   className?: string;
 }
 
 const Filter: React.FC<FilterProps> = () => {
+  const [modelArray, setModelArray] = useState<string[]>([]);
   const dispatch = useDispatch();
   const carsData = useSelector((store: RootState) => store.cars.data);
-  const uniqueBodyTypes = [
-    ...new Set(carsData.map((item) => item.vehicle.standard.bodyType)),
-  ];
+  const totalCarsData = useSelector((store: RootState) => store.cars.totalCar);
 
-  console.log(carsData);
+  const uniqueBodyTypes = [
+    ...new Set(
+      totalCarsData?.map((item: any) => item.vehicle.standard.bodyType)
+    ),
+  ];
 
   const initialState = uniqueBodyTypes.reduce((state, bodyType) => {
     state[bodyType] = false;
@@ -51,12 +54,19 @@ const Filter: React.FC<FilterProps> = () => {
 
   const getFilteredData = async () => {
     try {
+      dispatch(startLoading(true));
       const queryParams = buildQueryParams(selectedState);
       const data = await axiosInstance.get(`/api/getcars?${queryParams}`);
-      console.log(data.data);
+      if (totalCarsData.length <= 0) {
+        dispatch(totalCars(data.data));
+      }
       dispatch(setCar(data.data));
+      if (modelArray.length <= 0) {
+        setModel(data.data);
+      }
     } catch (err) {
       console.error(err);
+      dispatch(startLoading(false));
     }
   };
 
@@ -64,9 +74,12 @@ const Filter: React.FC<FilterProps> = () => {
     getFilteredData();
   }, [selectedState]);
 
-  const modelArray = carsData?.map((item) => {
-    return item?.vehicle?.model;
-  });
+  const setModel = (data: any) => {
+    const FilteredData: string[] = Array.from(
+      new Set(data?.data?.flatMap((item: any) => item?.vehicle?.model))
+    );
+    setModelArray(FilteredData);
+  };
 
   return (
     <div
@@ -224,6 +237,69 @@ const Filter: React.FC<FilterProps> = () => {
 };
 
 export const FilterSmall = () => {
+  const [modelArray, setModelArray] = useState<string[]>([]);
+  const dispatch = useDispatch();
+  const carsData = useSelector((store: RootState) => store.cars.data);
+  const totalCarsData = useSelector((store: RootState) => store.cars.totalCar);
+
+  const uniqueBodyTypes = [
+    ...new Set(
+      totalCarsData?.map((item: any) => item.vehicle.standard.bodyType)
+    ),
+  ];
+
+  const initialState = uniqueBodyTypes.reduce((state, bodyType) => {
+    state[bodyType] = false;
+    return state;
+  }, {});
+
+  const [selectedState, setSelectedState] = useState(initialState);
+  const buildQueryParams = (filters: any) => {
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(filters)) {
+      if (value) {
+        params.append(key, String(value));
+      }
+    }
+    return params.toString();
+  };
+
+  const handleCheckboxChange = (event: any) => {
+    const { name, checked } = event.target;
+    setSelectedState((prevState: any) => ({
+      ...prevState,
+      [name]: checked,
+    }));
+  };
+
+  const getFilteredData = async () => {
+    try {
+      dispatch(startLoading(true));
+      const queryParams = buildQueryParams(selectedState);
+      const data = await axiosInstance.get(`/api/getcars?${queryParams}`);
+      if (totalCarsData.length <= 0) {
+        dispatch(totalCars(data.data));
+      }
+      dispatch(setCar(data.data));
+      if (modelArray.length <= 0) {
+        setModel(data.data);
+      }
+    } catch (err) {
+      console.error(err);
+      dispatch(startLoading(false));
+    }
+  };
+
+  useEffect(() => {
+    getFilteredData();
+  }, [selectedState]);
+
+  const setModel = (data: any) => {
+    const FilteredData: string[] = Array.from(
+      new Set(data?.data?.flatMap((item: any) => item?.vehicle?.model))
+    );
+    setModelArray(FilteredData);
+  };
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -234,7 +310,7 @@ export const FilterSmall = () => {
       </SheetTrigger>
       <SheetContent className="overflow-y-auto">
         <div
-          className={`overflow-y-auto mt-6 border border-secondary rounded-md py-4 space-y-4`}
+          className={`overflow-y-auto border border-secondary rounded-md py-4 space-y-4`}
         >
           <div className="border-b-2 py-4 border-secondary px-4 space-y-4">
             <div className="font-semibold text-sm border-l-2 border-primary px-2">
@@ -254,61 +330,32 @@ export const FilterSmall = () => {
               Body Style
             </div>
             <div className="space-y-1 modal-container h-24 overflow-y-scroll">
-              <div className="checkbox-container flex items-center gap-2">
-                <input id="first" type="checkbox" />
-                <label className=" text-sm font-medium" htmlFor="first">
-                  MPV
-                </label>
-              </div>
-              <div className="checkbox-container flex items-center gap-2">
-                <input id="first" type="checkbox" />
-                <label className=" text-sm font-medium" htmlFor="first">
-                  Convertible
-                </label>
-              </div>
-              <div className="checkbox-container flex items-center gap-2">
-                <input id="first" type="checkbox" />
-                <label className=" text-sm font-medium" htmlFor="first">
-                  SUV
-                </label>
-              </div>
-              <div className="checkbox-container flex items-center gap-2">
-                <input id="first" type="checkbox" />
-                <label className=" text-sm font-medium" htmlFor="first">
-                  Estate
-                </label>
-              </div>
-              <div className="checkbox-container flex items-center gap-2">
-                <input id="first" type="checkbox" />
-                <label className=" text-sm font-medium" htmlFor="first">
-                  Coupe
-                </label>
-              </div>
-              <div className="checkbox-container flex items-center gap-2">
-                <input id="first" type="checkbox" />
-                <label className=" text-sm font-medium" htmlFor="first">
-                  Pickup
-                </label>
-              </div>
-              <div className="checkbox-container flex items-center gap-2">
-                <input id="first" type="checkbox" />
-                <label className=" text-sm font-medium" htmlFor="first">
-                  Estate
-                </label>
-              </div>
-              <div className="checkbox-container flex items-center gap-2">
-                <input id="first" type="checkbox" />
-                <label className=" text-sm font-medium" htmlFor="first">
-                  Pickup
-                </label>
-              </div>
+              {uniqueBodyTypes?.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="checkbox-container flex items-center gap-2"
+                  >
+                    <input
+                      checked={selectedState[item]}
+                      name={item}
+                      onChange={(e) => handleCheckboxChange(e)}
+                      id={item}
+                      type="checkbox"
+                    />
+                    <label className=" text-sm font-medium" htmlFor={item}>
+                      {item}
+                    </label>
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="border-b-2 pb-4 border-secondary px-4">
             <SelectComp label="Make" />
           </div>
           <div className="border-b-2 pb-4 border-secondary px-4">
-            <SelectComp label="Model" />
+            <SelectComp label="Model" data={modelArray} />
           </div>
           <div className="border-b-2 pb-4 border-secondary px-4 flex items-center gap-4">
             <SelectComp label="Min Year" />

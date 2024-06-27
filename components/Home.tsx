@@ -12,12 +12,13 @@ import Pagination from "./PaginationComp";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import axiosInstance from "@/axiosConfig";
-import { setCar } from "@/slices/carSlice";
+import { setCar, startLoading } from "@/slices/carSlice";
 
 const Home: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const horizontal = false;
   const carsData = useSelector((state: RootState) => state.cars.data);
+  const loading = useSelector((state: RootState) => state.cars.loading);
   const carsDataLength = useSelector(
     (state: RootState) => state.cars.dataLength
   );
@@ -28,14 +29,14 @@ const Home: React.FC = () => {
   const dispatch = useDispatch();
   const fetchData = async () => {
     try {
-      console.log(currentPage - 1);
+      dispatch(startLoading(true));
       const data = await axiosInstance.get(
         `/api/getcars?limit=9&page=${currentPage - 1}`
       );
-      console.log(data.data.data);
       dispatch(setCar(data.data));
     } catch (err) {
       console.error(err);
+      dispatch(startLoading(false));
     }
   };
 
@@ -69,22 +70,26 @@ const Home: React.FC = () => {
       <div
         className={`${
           !horizontal
-            ? ` ${
-                carsData.length > 0
+            ? `w-full ${
+                carsData?.length > 0 && !loading
                   ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                   : ""
               } `
             : "flex flex-col gap-8"
         } mt-2`}
       >
-        {carsData?.length > 0 ? (
+        {loading ? (
+          <div className="h-[75vh] w-full flex justify-center items-center">
+            Loading...
+          </div>
+        ) : carsData?.length > 0 ? (
           carsData.map((item, index) => {
             if (index == 2) return <CarFinance key={index} />;
             return <CarCard item={item} key={index} />;
           })
         ) : (
-          <div className="h-[40vh] w-full flex justify-center items-center">
-            Loading...
+          <div className="h-[75vh] w-full flex justify-center items-center">
+            No Data Found!
           </div>
         )}
       </div>
