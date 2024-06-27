@@ -1,17 +1,29 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import Home from "@/components/Home";
+import { Provider, useDispatch } from "react-redux";
+import { store } from "@/store";
 
 const Page = () => {
+  const searchRef = useRef<any>();
+
+  const focusInput = () => {
+    console.log(searchRef.current);
+  };
+
   return (
-    <div className="">
-      <Navbar />
-      <div className="flex flex-col lg:flex-row px-4 md:px-8 xl:px-[4rem] gap-0 lg:gap-8">
-        <Sidebar />
-        <Home />
+    <Provider store={store}>
+      <div className="">
+        <Navbar focusInput={focusInput} />
+        <div className="flex flex-col lg:flex-row px-4 md:px-8 xl:px-[4rem] gap-0 lg:gap-8">
+          <Sidebar searchRef={searchRef} />
+          <Home />
+        </div>
       </div>
-    </div>
+    </Provider>
   );
 };
 

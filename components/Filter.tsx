@@ -31,12 +31,12 @@ const Filter: React.FC<FilterProps> = () => {
         </div>
         <SelectComp label="Location" />
         <div className="flex items-center gap-4">
-          <SelectComp label="Location" />
-          <SelectComp label="Location" />
+          <SelectComp label="Zip Code" />
+          <SelectComp label="Search Within" />
         </div>
       </div>
       <div className="border-b-2 pb-4 border-secondary px-4">
-        <SelectComp label="Location" />
+        <SelectComp label="Vehicle Type" />
       </div>
       <div className="border-b-2 py-4 border-secondary px-4 space-y-4">
         <div className="font-semibold text-sm border-l-2 border-primary px-2">
@@ -58,68 +58,68 @@ const Filter: React.FC<FilterProps> = () => {
           <div className="checkbox-container flex items-center gap-2">
             <input id="first" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="first">
-              Fuel Efficient
+              SUV
             </label>
           </div>
           <div className="checkbox-container flex items-center gap-2">
             <input id="first" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="first">
-              MPV
+              Estate
             </label>
           </div>
           <div className="checkbox-container flex items-center gap-2">
             <input id="first" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="first">
-              MPV
+              Coupe
             </label>
           </div>
           <div className="checkbox-container flex items-center gap-2">
             <input id="first" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="first">
-              MPV
+              Pickup
             </label>
           </div>
           <div className="checkbox-container flex items-center gap-2">
             <input id="first" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="first">
-              MPV
+              Estate
             </label>
           </div>
           <div className="checkbox-container flex items-center gap-2">
             <input id="first" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="first">
-              MPV
+              Pickup
             </label>
           </div>
         </div>
       </div>
       <div className="border-b-2 pb-4 border-secondary px-4">
-        <SelectComp label="Location" />
+        <SelectComp label="Make" />
       </div>
       <div className="border-b-2 pb-4 border-secondary px-4">
-        <SelectComp label="Location" />
+        <SelectComp label="Model" />
       </div>
       <div className="border-b-2 pb-4 border-secondary px-4 flex items-center gap-4">
-        <SelectComp label="Location" />
-        <SelectComp label="Location" />
+        <SelectComp label="Min Year" />
+        <SelectComp label="Max Year" />
       </div>
       <div className="border-b-2 py-4 border-secondary px-4 space-y-4">
         <div className="font-semibold text-sm border-l-2 border-primary px-2">
           Price
         </div>
         <div className="flex items-center gap-4">
-          <InputComp />
-          <InputComp />
+          <InputComp label="Min Price" />
+          <InputComp label="Max Price" />
         </div>
         <input type="range" className="w-full" />
       </div>
       <div className="border-b-2 py-4 border-secondary px-4 flex items-center justify-between gap-4">
-        <SelectComp label="max" />
-        <SelectComp label="min" />
+        <SelectComp label="Min Seats" />
+        <SelectComp label="Max Seats" />
       </div>
       <div className="border-b-2 py-4 border-secondary px-4 flex items-center justify-between gap-4">
-        <SelectComp label="min engine" />
-        <SelectComp label="max engine" />
+        <SelectComp label="Min Engine" />
+        <SelectComp label="Max Engine" />
       </div>
       <div className="border-b-2 pb-4 border-secondary px-4">
         <SelectComp label="Exterior Color" />
@@ -135,19 +135,19 @@ const Filter: React.FC<FilterProps> = () => {
           <div className="checkbox-container flex items-center gap-2">
             <input id="val1" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="val1">
-              Fuel Efficient
+              Automatic
             </label>
           </div>
           <div className="checkbox-container flex items-center gap-2">
             <input id="val2" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="val2">
-              Fuel Efficient
+              Manual
             </label>
           </div>
           <div className="checkbox-container flex items-center gap-2">
             <input id="val3" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="val3">
-              Fuel Efficient
+              Other
             </label>
           </div>
         </div>
@@ -160,37 +160,37 @@ const Filter: React.FC<FilterProps> = () => {
           <div className="checkbox-container flex items-center gap-2">
             <input id="val3" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="val3">
-              Fuel Efficient
+              Petrol
             </label>
           </div>
           <div className="checkbox-container flex items-center gap-2">
             <input id="val3" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="val3">
-              Fuel Efficient
+              Diesel
             </label>
           </div>
           <div className="checkbox-container flex items-center gap-2">
             <input id="val3" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="val3">
-              Fuel Efficient
+              Electric
             </label>
           </div>
           <div className="checkbox-container flex items-center gap-2">
             <input id="val3" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="val3">
-              Fuel Efficient
+              Petrol Electric Hybrid
             </label>
           </div>
           <div className="checkbox-container flex items-center gap-2">
             <input id="val3" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="val3">
-              Fuel Efficient
+              Diesel Electric Hybrid
             </label>
           </div>
           <div className="checkbox-container flex items-center gap-2">
             <input id="val3" type="checkbox" />
             <label className=" text-sm font-medium" htmlFor="val3">
-              Fuel Efficient
+              Petrol Gas
             </label>
           </div>
         </div>
@@ -198,7 +198,9 @@ const Filter: React.FC<FilterProps> = () => {
       <div className="border-b-2 pb-4 border-secondary px-4">
         <SelectComp label="Home Delivery" />
       </div>
-      <div className="px-4 text-primary">Show more filters</div>
+      <div className="px-4 font-semibold text-sm text-primary">
+        Show more filters
+      </div>
     </div>
   );
 };
@@ -214,7 +216,7 @@ export const FilterSmall = () => {
       </SheetTrigger>
       <SheetContent className="overflow-y-auto">
         <div
-          className={`overflow-y-auto border mt-6 border-secondary rounded-md py-4 space-y-4`}
+          className={`overflow-y-auto mt-6 border border-secondary rounded-md py-4 space-y-4`}
         >
           <div className="border-b-2 py-4 border-secondary px-4 space-y-4">
             <div className="font-semibold text-sm border-l-2 border-primary px-2">
@@ -222,12 +224,12 @@ export const FilterSmall = () => {
             </div>
             <SelectComp label="Location" />
             <div className="flex items-center gap-4">
-              <SelectComp label="Location" />
-              <SelectComp label="Location" />
+              <SelectComp label="Zip Code" />
+              <SelectComp label="Search Within" />
             </div>
           </div>
           <div className="border-b-2 pb-4 border-secondary px-4">
-            <SelectComp label="Location" />
+            <SelectComp label="Vehicle Type" />
           </div>
           <div className="border-b-2 py-4 border-secondary px-4 space-y-4">
             <div className="font-semibold text-sm border-l-2 border-primary px-2">
@@ -249,68 +251,68 @@ export const FilterSmall = () => {
               <div className="checkbox-container flex items-center gap-2">
                 <input id="first" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="first">
-                  Fuel Efficient
+                  SUV
                 </label>
               </div>
               <div className="checkbox-container flex items-center gap-2">
                 <input id="first" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="first">
-                  MPV
+                  Estate
                 </label>
               </div>
               <div className="checkbox-container flex items-center gap-2">
                 <input id="first" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="first">
-                  MPV
+                  Coupe
                 </label>
               </div>
               <div className="checkbox-container flex items-center gap-2">
                 <input id="first" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="first">
-                  MPV
+                  Pickup
                 </label>
               </div>
               <div className="checkbox-container flex items-center gap-2">
                 <input id="first" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="first">
-                  MPV
+                  Estate
                 </label>
               </div>
               <div className="checkbox-container flex items-center gap-2">
                 <input id="first" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="first">
-                  MPV
+                  Pickup
                 </label>
               </div>
             </div>
           </div>
           <div className="border-b-2 pb-4 border-secondary px-4">
-            <SelectComp label="Location" />
+            <SelectComp label="Make" />
           </div>
           <div className="border-b-2 pb-4 border-secondary px-4">
-            <SelectComp label="Location" />
+            <SelectComp label="Model" />
           </div>
           <div className="border-b-2 pb-4 border-secondary px-4 flex items-center gap-4">
-            <SelectComp label="Location" />
-            <SelectComp label="Location" />
+            <SelectComp label="Min Year" />
+            <SelectComp label="Max Year" />
           </div>
           <div className="border-b-2 py-4 border-secondary px-4 space-y-4">
             <div className="font-semibold text-sm border-l-2 border-primary px-2">
               Price
             </div>
             <div className="flex items-center gap-4">
-              <InputComp />
-              <InputComp />
+              <InputComp label="Min Price" />
+              <InputComp label="Max Price" />
             </div>
             <input type="range" className="w-full" />
           </div>
           <div className="border-b-2 py-4 border-secondary px-4 flex items-center justify-between gap-4">
-            <SelectComp label="max" />
-            <SelectComp label="min" />
+            <SelectComp label="Min Seats" />
+            <SelectComp label="Max Seats" />
           </div>
           <div className="border-b-2 py-4 border-secondary px-4 flex items-center justify-between gap-4">
-            <SelectComp label="min engine" />
-            <SelectComp label="max engine" />
+            <SelectComp label="Min Engine" />
+            <SelectComp label="Max Engine" />
           </div>
           <div className="border-b-2 pb-4 border-secondary px-4">
             <SelectComp label="Exterior Color" />
@@ -326,19 +328,19 @@ export const FilterSmall = () => {
               <div className="checkbox-container flex items-center gap-2">
                 <input id="val1" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="val1">
-                  Fuel Efficient
+                  Automatic
                 </label>
               </div>
               <div className="checkbox-container flex items-center gap-2">
                 <input id="val2" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="val2">
-                  Fuel Efficient
+                  Manual
                 </label>
               </div>
               <div className="checkbox-container flex items-center gap-2">
                 <input id="val3" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="val3">
-                  Fuel Efficient
+                  Other
                 </label>
               </div>
             </div>
@@ -351,37 +353,37 @@ export const FilterSmall = () => {
               <div className="checkbox-container flex items-center gap-2">
                 <input id="val3" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="val3">
-                  Fuel Efficient
+                  Petrol
                 </label>
               </div>
               <div className="checkbox-container flex items-center gap-2">
                 <input id="val3" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="val3">
-                  Fuel Efficient
+                  Diesel
                 </label>
               </div>
               <div className="checkbox-container flex items-center gap-2">
                 <input id="val3" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="val3">
-                  Fuel Efficient
+                  Electric
                 </label>
               </div>
               <div className="checkbox-container flex items-center gap-2">
                 <input id="val3" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="val3">
-                  Fuel Efficient
+                  Petrol Electric Hybrid
                 </label>
               </div>
               <div className="checkbox-container flex items-center gap-2">
                 <input id="val3" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="val3">
-                  Fuel Efficient
+                  Diesel Electric Hybrid
                 </label>
               </div>
               <div className="checkbox-container flex items-center gap-2">
                 <input id="val3" type="checkbox" />
                 <label className=" text-sm font-medium" htmlFor="val3">
-                  Fuel Efficient
+                  Petrol Gas
                 </label>
               </div>
             </div>
@@ -389,7 +391,9 @@ export const FilterSmall = () => {
           <div className="border-b-2 pb-4 border-secondary px-4">
             <SelectComp label="Home Delivery" />
           </div>
-          <div className="px-4 text-primary">Show more filters</div>
+          <div className="px-4 font-semibold text-sm text-primary">
+            Show more filters
+          </div>
         </div>
       </SheetContent>
     </Sheet>

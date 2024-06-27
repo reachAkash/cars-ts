@@ -1,14 +1,24 @@
 "use client";
 
-import React, { FormEvent, MouseEvent } from "react";
+import React, { FormEvent, MouseEvent, RefObject, useState } from "react";
 import SearchIcon from "./icons/Search";
 import axiosInstance from "@/axiosConfig";
+import { UseSelector, useDispatch, useSelector } from "react-redux";
+import { setCar } from "@/slices/carSlice";
+import { RootState } from "@/store";
 
-const CarsSearch: React.FC = () => {
+interface CarsSearchProps {
+  searchRef: any;
+}
+const CarsSearch: React.FC<CarsSearchProps> = ({ searchRef }) => {
+  const [searchInput, setSearchInput] = useState<string>("");
+  const carsData = useSelector((state: RootState) => state.cars.data);
+  const dispatch = useDispatch();
   const fetchData = async () => {
     try {
       const data = await axiosInstance.get("/api");
-      console.log(data.data.data);
+      console.log(data.data);
+      dispatch(setCar(data.data));
     } catch (err) {
       console.error(err);
     }
@@ -16,13 +26,16 @@ const CarsSearch: React.FC = () => {
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    fetchData();
+    if (searchInput.trim() != "") {
+      fetchData();
+    }
   };
 
   const handleIconClick = (e: MouseEvent<SVGElement>) => {
     e.preventDefault();
-    fetchData();
-    console.log("im here");
+    if (searchInput.trim() != "") {
+      fetchData();
+    }
   };
 
   return (
@@ -34,7 +47,13 @@ const CarsSearch: React.FC = () => {
         onSubmit={handleSearch}
         className=" border border-secondary flex items-center justify-between rounded-md px-4 py-2"
       >
-        <input type="text" className="w-full border-none outline-none" />
+        <input
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          ref={searchRef}
+          type="text"
+          className="w-full border-none outline-none"
+        />
         <SearchIcon onClick={handleIconClick} className="text-gray-300" />
       </form>
     </div>

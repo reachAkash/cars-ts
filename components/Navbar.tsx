@@ -1,15 +1,19 @@
 import CarIcon from "@/components/icons/Car";
 import HeartIcon from "@/components/icons/Heart";
 import UserIcon from "@/components/icons/User";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Search } from "lucide-react";
 import { Bookmark } from "lucide-react";
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  focusInput: () => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ focusInput }) => {
   return (
     <div className="bg-primary sticky top-0 z-50">
       <div className="flex items-center justify-between px-[1rem] lg:px-[2rem] xl:px-[4rem]">
-        <div className="w-[50%] md:w-[25%] text-lg sm:text-xl md:text-2xl xl:text-3xl text-white font-thin">
+        <div className="w-[60%] md:w-[25%] text-xl md:text-2xl xl:text-3xl text-white font-thin">
           Motor<span className="font-semibold">Genius</span>.co.uk
         </div>
         <div className="hidden lg:block w-[70%] lg:w-[75%]">
@@ -34,13 +38,13 @@ const Navbar: React.FC = () => {
             <span>About us</span>
           </div>
         </div>
-        <div className="lg:hidden w-[50%] flex items-center justify-end py-3 gap-2 md:gap-4">
-          <div className="border-r text-white px-2 md:px-4 gap-1 border-white flex items-center">
+        <div className="lg:hidden w-[40%] flex items-center justify-end lg:justify-end py-4 gap-2 md:gap-4">
+          <div className="border-r text-white px-3 md:px-4 gap-1 border-white flex items-center">
             <span className="hidden sm:flex">Search</span>{" "}
-            <Search className="text-white" />{" "}
+            <Search onClick={focusInput} className="text-white" />{" "}
             <Bookmark className="text-white" />
           </div>
-          <div className="text-white text-sm md:text-base">Sign In </div>
+          <div className="text-white text-sm md:text-base">Sign In</div>
         </div>
       </div>
     </div>
