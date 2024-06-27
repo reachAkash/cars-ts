@@ -38,8 +38,8 @@ const SelectComp: React.FC<Select> = ({ label, data }) => {
         onChange={(e) => setSelectValue(e.target.value)}
         className="w-full cursor-pointer outline-none border-none"
       >
-        {data?.map((item: string) => {
-          return <option>{item}</option>;
+        {data?.map((item: string, index) => {
+          return <option key={index}>{item}</option>;
         })}
       </select>
     </div>

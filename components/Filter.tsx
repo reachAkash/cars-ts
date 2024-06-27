@@ -92,7 +92,10 @@ const Filter: React.FC<FilterProps> = () => {
         <div className="space-y-1 modal-container h-24 overflow-y-scroll">
           {uniqueBodyTypes?.map((item, index) => {
             return (
-              <div className="checkbox-container flex items-center gap-2">
+              <div
+                key={index}
+                className="checkbox-container flex items-center gap-2"
+              >
                 <input
                   checked={selectedState[item]}
                   name={item}
