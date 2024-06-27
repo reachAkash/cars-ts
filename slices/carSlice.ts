@@ -6,10 +6,12 @@ export interface Car {
 
 export interface CarState {
   data: Car[];
+  dataLength: number;
 }
 
 const initialState: CarState = {
   data: [],
+  dataLength: 0,
 };
 
 export const carSlice = createSlice({
@@ -17,7 +19,9 @@ export const carSlice = createSlice({
   initialState,
   reducers: {
     setCar: (state, action) => {
-      state.data = action.payload;
+      console.log(action.payload);
+      state.data = action.payload.data;
+      state.dataLength = action.payload.dataLength;
     },
     addCar: (state, action: PayloadAction<Car>) => {
       state.data.push(action.payload);

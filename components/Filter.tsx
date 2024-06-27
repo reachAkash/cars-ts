@@ -1,26 +1,73 @@
-import React from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import SelectComp from "@/components/SelectComp";
 import InputComp from "./InputComp";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { SlidersHorizontal } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { store } from "@/store";
+import { RootState } from "@/store";
+import axiosInstance from "@/axiosConfig";
+import { setCar } from "@/slices/carSlice";
 
 interface FilterProps {
   className?: string;
 }
 
 const Filter: React.FC<FilterProps> = () => {
+  const dispatch = useDispatch();
+  const carsData = useSelector((store: RootState) => store.cars.data);
+  const uniqueBodyTypes = [
+    ...new Set(carsData.map((item) => item.vehicle.standard.bodyType)),
+  ];
+
+  console.log(carsData);
+
+  const initialState = uniqueBodyTypes.reduce((state, bodyType) => {
+    state[bodyType] = false;
+    return state;
+  }, {});
+
+  const [selectedState, setSelectedState] = useState(initialState);
+  const buildQueryParams = (filters: any) => {
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(filters)) {
+      if (value) {
+        params.append(key, String(value));
+      }
+    }
+    return params.toString();
+  };
+
+  const handleCheckboxChange = (event: any) => {
+    const { name, checked } = event.target;
+    setSelectedState((prevState: any) => ({
+      ...prevState,
+      [name]: checked,
+    }));
+  };
+
+  const getFilteredData = async () => {
+    try {
+      const queryParams = buildQueryParams(selectedState);
+      const data = await axiosInstance.get(`/api/getcars?${queryParams}`);
+      console.log(data.data);
+      dispatch(setCar(data.data));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getFilteredData();
+  }, [selectedState]);
+
+  const modelArray = carsData?.map((item) => {
+    return item?.vehicle?.model;
+  });
+
   return (
     <div
       className={`overflow-y-auto border border-secondary rounded-md py-4 space-y-4`}
@@ -43,61 +90,29 @@ const Filter: React.FC<FilterProps> = () => {
           Body Style
         </div>
         <div className="space-y-1 modal-container h-24 overflow-y-scroll">
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="first" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="first">
-              MPV
-            </label>
-          </div>
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="first" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="first">
-              Convertible
-            </label>
-          </div>
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="first" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="first">
-              SUV
-            </label>
-          </div>
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="first" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="first">
-              Estate
-            </label>
-          </div>
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="first" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="first">
-              Coupe
-            </label>
-          </div>
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="first" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="first">
-              Pickup
-            </label>
-          </div>
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="first" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="first">
-              Estate
-            </label>
-          </div>
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="first" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="first">
-              Pickup
-            </label>
-          </div>
+          {uniqueBodyTypes?.map((item, index) => {
+            return (
+              <div className="checkbox-container flex items-center gap-2">
+                <input
+                  checked={selectedState[item]}
+                  name={item}
+                  onChange={(e) => handleCheckboxChange(e)}
+                  id={item}
+                  type="checkbox"
+                />
+                <label className=" text-sm font-medium" htmlFor={item}>
+                  {item}
+                </label>
+              </div>
+            );
+          })}
         </div>
       </div>
       <div className="border-b-2 pb-4 border-secondary px-4">
         <SelectComp label="Make" />
       </div>
       <div className="border-b-2 pb-4 border-secondary px-4">
-        <SelectComp label="Model" />
+        <SelectComp label="Model" data={modelArray} />
       </div>
       <div className="border-b-2 pb-4 border-secondary px-4 flex items-center gap-4">
         <SelectComp label="Min Year" />

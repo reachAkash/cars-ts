@@ -29,6 +29,7 @@ const ImgCarousel: React.FC<ImgCarouselData> = ({ data }) => {
     <>
       <style>{customStyles}</style>
       <Swiper
+        spaceBetween={50}
         autoplay={{ delay: 2000 }}
         slidesPerView={1}
         pagination={{ clickable: true }}

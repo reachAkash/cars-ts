@@ -35,7 +35,7 @@ const CarCard: React.FC<CarDetails> = ({ item }) => {
         <div className="border-t border-b px-4 flex items-center justify-between border-secondary py-3">
           <div className="flex text-xs flex-col justify-center items-center">
             <SpeedIcon />
-            <span className="text-xs">25,000</span>
+            <span className="text-xs">{item?.vehicle?.topSpeedMPH} MPH</span>
           </div>
           <div className="flex flex-col justify-center items-center">
             <PetrolIcon />

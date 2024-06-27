@@ -1,36 +1,46 @@
 "use client";
 
-import React, { useRef, MouseEvent } from "react";
+import axiosInstance from "@/axiosConfig";
+import { setCar } from "@/slices/carSlice";
+import React, { useRef, MouseEvent, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 interface Select {
   label: string;
+  data?: string[];
 }
 
-const SelectComp: React.FC<Select> = (props) => {
-  const boxRef = useRef<HTMLSelectElement>(null);
+const SelectComp: React.FC<Select> = ({ label, data }) => {
+  const [selectvalue, setSelectValue] = useState("");
+  const dispatch = useDispatch();
 
-  const handleOpenSelect = (e: MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    if (boxRef.current) {
-      boxRef.current.click();
+  const getFilteredData = async () => {
+    try {
+      const data = await axiosInstance.get(
+        `/api/getcars?bodyType=${selectvalue}`
+      );
+      console.log(data.data);
+      dispatch(setCar(data.data));
+    } catch (err) {
+      console.error(err);
     }
   };
 
+  useEffect(() => {
+    getFilteredData();
+  }, [selectvalue]);
+
   return (
-    <div
-      onClick={handleOpenSelect}
-      className="border w-full border-gray-200 px-2 py-2 rounded-md"
-    >
-      <div className="text-xs font-medium">{props?.label}</div>
+    <div className="border w-full border-gray-200 px-2 py-2 rounded-md">
+      <div className="text-xs font-medium">{label}</div>
       <select
-        ref={boxRef}
+        value={selectvalue}
+        onChange={(e) => setSelectValue(e.target.value)}
         className="w-full cursor-pointer outline-none border-none"
       >
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
+        {data?.map((item: string) => {
+          return <option>{item}</option>;
+        })}
       </select>
     </div>
   );

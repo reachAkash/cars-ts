@@ -47,16 +47,16 @@ const Pagination: React.FC<PaginationProps> = ({
     <div className="flex items-center justify-center space-x-2 w-full ">
       <button
         onClick={handlePrevious}
-        disabled={currentPage === 1}
-        className="px-3 py-1 border border-gray-300 rounded-md"
+        disabled={currentPage <= 1}
+        className="px-3 py-1 disabled:cursor-not-allowed disabled:opacity-70 border border-gray-300 rounded-md"
       >
         &lt; Previous
       </button>
       {renderPageNumbers()}
       <button
         onClick={handleNext}
-        disabled={currentPage === totalPages}
-        className="px-3 py-1 border border-gray-300 rounded-md"
+        disabled={currentPage >= totalPages}
+        className={`px-3 py-1 disabled:cursor-not-allowed disabled:opacity-70 border border-gray-300 rounded-md`}
       >
         Next &gt;
       </button>

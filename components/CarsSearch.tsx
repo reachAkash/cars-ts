@@ -16,7 +16,10 @@ const CarsSearch: React.FC<CarsSearchProps> = ({ searchRef }) => {
   const dispatch = useDispatch();
   const fetchData = async () => {
     try {
-      const data = await axiosInstance.get("/api");
+      const searchVal =
+        searchInput.charAt(0).toUpperCase() + searchInput.slice(1);
+      console.log(searchVal);
+      const data = await axiosInstance.get(`/api/getcars?val=${searchVal}`);
       console.log(data.data);
       dispatch(setCar(data.data));
     } catch (err) {

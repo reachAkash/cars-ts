@@ -16,17 +16,23 @@ import { setCar } from "@/slices/carSlice";
 
 const Home: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 5;
   const horizontal = false;
   const carsData = useSelector((state: RootState) => state.cars.data);
+  const carsDataLength = useSelector(
+    (state: RootState) => state.cars.dataLength
+  );
+  const totalPages = Math.floor(carsDataLength / carsData?.length || 0);
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
   const dispatch = useDispatch();
   const fetchData = async () => {
     try {
-      const data = await axiosInstance.get("/api");
-      console.log(data.data);
+      console.log(currentPage - 1);
+      const data = await axiosInstance.get(
+        `/api/getcars?limit=9&page=${currentPage - 1}`
+      );
+      console.log(data.data.data);
       dispatch(setCar(data.data));
     } catch (err) {
       console.error(err);
@@ -35,13 +41,15 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentPage]);
   return (
     <div className="w-full lg:w-[82%] py-5 space-y-3 overflow-y-auto no-scrollbar h-svh ">
       <div className="flex items-center justify-between">
         <div className="text-xs md:text-sm font-semibold">
-          <span className="hidden md:inline-block">Showing 1-12 of</span>{" "}
-          <span className="text-primary">54 </span>results
+          <span className="hidden md:inline-block">
+            Showing 1-{carsData?.length} of
+          </span>{" "}
+          <span className="text-primary">{carsDataLength} </span>results
         </div>
         <div className="text-xs md:text-sm flex items-center gap-1">
           Sort by{" "}
@@ -69,7 +77,7 @@ const Home: React.FC = () => {
             : "flex flex-col gap-8"
         } mt-2`}
       >
-        {carsData.length > 0 ? (
+        {carsData?.length > 0 ? (
           carsData.map((item, index) => {
             if (index == 2) return <CarFinance key={index} />;
             return <CarCard item={item} key={index} />;
