@@ -2,7 +2,7 @@ import axios from "axios";
 import { config } from "process";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://cars-akash.vercel.app",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
