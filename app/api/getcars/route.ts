@@ -52,4 +52,7 @@ export const GET = async (request: Request) => {
   } catch (err) {
     console.error(err);
   }
+  return NextResponse.json({
+    message: "Internal Server Error",
+  });
 };
