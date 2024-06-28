@@ -330,7 +330,7 @@ export const FilterSmall = () => {
       </SheetTrigger>
       <SheetContent className="overflow-y-auto">
         <div
-          className={`overflow-y-auto border border-secondary rounded-md py-4 space-y-4`}
+          className={`overflow-y-auto mt-6 border border-secondary rounded-md py-4 space-y-4`}
         >
           <div className="border-b-2 py-4 border-secondary px-4 space-y-4">
             <div className="font-semibold text-sm border-l-2 border-primary px-2">
