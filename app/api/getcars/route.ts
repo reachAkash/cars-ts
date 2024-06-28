@@ -32,6 +32,16 @@ export const GET = async (request: Request) => {
         ];
       } else if (key == "bodyType") {
         searchFilters["vehicle.model"] = value;
+      } else if (
+        key == "Diesel" ||
+        key == "Petrol" ||
+        key == "Electric" ||
+        key == "Petrol Hybrid" ||
+        key == "Diesel Hybrid"
+      ) {
+        searchFilters["vehicle.fuelType"] = key;
+      } else if (key == "doors") {
+        searchFilters["vehicle.doors"] = Number(value);
       } else if (key != "page" && key != "limit") {
         searchFilters["vehicle.standard.bodyType"] = key;
       }

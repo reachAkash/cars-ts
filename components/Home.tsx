@@ -48,7 +48,8 @@ const Home: React.FC = () => {
       <div className="flex items-center justify-between">
         <div className="text-xs md:text-sm font-semibold">
           <span className="hidden md:inline-block">
-            Showing 1-{carsData?.length} of
+            Showing {1 + (currentPage - 1) * 9}-
+            {carsData?.length + (currentPage - 1) * 9} of
           </span>{" "}
           <span className="text-primary">{carsDataLength} </span>results
         </div>

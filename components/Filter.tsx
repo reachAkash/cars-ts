@@ -18,6 +18,8 @@ interface FilterProps {
 
 const Filter: React.FC<FilterProps> = () => {
   const [modelArray, setModelArray] = useState<string[]>([]);
+  const [fuelArray, setFuelArray] = useState<string[]>([]);
+  const [doorsArray, setDoorsArray] = useState<number[]>([]);
   const dispatch = useDispatch();
   const carsData = useSelector((store: RootState) => store.cars.data);
   const totalCarsData = useSelector((store: RootState) => store.cars.totalCar);
@@ -56,13 +58,21 @@ const Filter: React.FC<FilterProps> = () => {
     try {
       dispatch(startLoading(true));
       const queryParams = buildQueryParams(selectedState);
-      const data = await axiosInstance.get(`/api/getcars?${queryParams}`);
+      let url;
+      if (queryParams.length > 0) {
+        url = `/api/getcars?limit=9&${queryParams}`;
+      } else url = `api/getcars?limit=9`;
+      const data = await axiosInstance.get(url);
       if (totalCarsData.length <= 0) {
         dispatch(totalCars(data.data));
       }
       dispatch(setCar(data.data));
-      if (modelArray.length <= 0) {
-        setModel(data.data);
+      if (
+        modelArray.length <= 0 ||
+        fuelArray.length <= 0 ||
+        doorsArray.length <= 0
+      ) {
+        setFilteredData(data.data);
       }
     } catch (err) {
       console.error(err);
@@ -70,16 +80,24 @@ const Filter: React.FC<FilterProps> = () => {
     }
   };
 
-  useEffect(() => {
-    getFilteredData();
-  }, [selectedState]);
-
-  const setModel = (data: any) => {
+  const setFilteredData = (data: any) => {
     const FilteredData: string[] = Array.from(
       new Set(data?.data?.flatMap((item: any) => item?.vehicle?.model))
     );
     setModelArray(FilteredData);
+    const FilteredDataFuel: string[] = Array.from(
+      new Set(data?.data?.flatMap((item: any) => item?.vehicle?.fuelType))
+    );
+    setFuelArray(FilteredDataFuel);
+    const FilteredDoors: number[] = Array.from(
+      new Set(data?.data?.flatMap((item: any) => item?.vehicle?.doors))
+    );
+    setDoorsArray(FilteredDoors);
   };
+
+  useEffect(() => {
+    getFilteredData();
+  }, [selectedState]);
 
   return (
     <div
@@ -156,7 +174,7 @@ const Filter: React.FC<FilterProps> = () => {
         <SelectComp label="Exterior Color" />
       </div>
       <div className="border-b-2 pb-4 border-secondary px-4">
-        <SelectComp label="Doors" />
+        <SelectComp label="Doors" doorsData={doorsArray} />
       </div>
       <div className="border-b-2 py-4 border-secondary px-4 space-y-4">
         <div className="font-semibold text-sm border-l-2 border-primary px-2">
@@ -188,42 +206,25 @@ const Filter: React.FC<FilterProps> = () => {
           Fuel Type
         </div>
         <div className="space-y-1 modal-container h-24 overflow-y-scroll">
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="val3" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="val3">
-              Petrol
-            </label>
-          </div>
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="val3" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="val3">
-              Diesel
-            </label>
-          </div>
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="val3" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="val3">
-              Electric
-            </label>
-          </div>
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="val3" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="val3">
-              Petrol Electric Hybrid
-            </label>
-          </div>
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="val3" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="val3">
-              Diesel Electric Hybrid
-            </label>
-          </div>
-          <div className="checkbox-container flex items-center gap-2">
-            <input id="val3" type="checkbox" />
-            <label className=" text-sm font-medium" htmlFor="val3">
-              Petrol Gas
-            </label>
-          </div>
+          {fuelArray?.map((item, index) => {
+            return (
+              <div
+                key={index}
+                className="checkbox-container flex items-center gap-2"
+              >
+                <input
+                  checked={selectedState[item]}
+                  name={item}
+                  onChange={(e) => handleCheckboxChange(e)}
+                  id={item}
+                  type="checkbox"
+                />
+                <label className=" text-sm font-medium" htmlFor={item}>
+                  {item}
+                </label>
+              </div>
+            );
+          })}
         </div>
       </div>
       <div className="border-b-2 pb-4 border-secondary px-4">
@@ -276,7 +277,9 @@ export const FilterSmall = () => {
     try {
       dispatch(startLoading(true));
       const queryParams = buildQueryParams(selectedState);
-      const data = await axiosInstance.get(`/api/getcars?${queryParams}`);
+      const data = await axiosInstance.get(
+        `/api/getcars?limit=9${queryParams}`
+      );
       if (totalCarsData.length <= 0) {
         dispatch(totalCars(data.data));
       }

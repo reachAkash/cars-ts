@@ -8,25 +8,35 @@ import { useDispatch } from "react-redux";
 interface Select {
   label: string;
   data?: string[];
+  doorsData?: number[];
 }
 
-const SelectComp: React.FC<Select> = ({ label, data }) => {
-  const [selectvalue, setSelectValue] = useState("");
+const SelectComp: React.FC<Select> = ({ label, data, doorsData }) => {
+  const [selectvalue, setSelectValue] = useState<string | number>();
   const dispatch = useDispatch();
 
   const getFilteredData = async () => {
     try {
-      dispatch(startLoading(true));
-      const data = await axiosInstance.get(
-        `/api/getcars?bodyType=${selectvalue}`
-      );
-      console.log("first");
-      console.log(data.data);
-      dispatch(setCar(data.data));
+      if (selectvalue) {
+        dispatch(startLoading(true));
+        let url;
+        if (data && data.length > 0)
+          url = `/api/getcars?limit=9&bodyType=${selectvalue}`;
+        else if (doorsData && doorsData.length > 0)
+          url = `/api/getcars?limit=9&doors=${selectvalue}`;
+        console.log(url);
+        const resData = await axiosInstance.get(url!);
+        console.log(resData.data);
+        dispatch(setCar(resData.data));
+      }
     } catch (err) {
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    getFilteredData();
+  }, [selectvalue]);
 
   return (
     <div className="border w-full border-gray-200 px-2 py-2 rounded-md">
@@ -35,13 +45,19 @@ const SelectComp: React.FC<Select> = ({ label, data }) => {
         value={selectvalue}
         onChange={(e) => {
           setSelectValue(e.target.value);
-          getFilteredData();
         }}
         className="w-full cursor-pointer outline-none border-none"
       >
-        {data?.map((item: string, index) => {
-          return <option key={index}>{item}</option>;
-        })}
+        {data &&
+          data.length > 0 &&
+          data?.map((item: string, index) => {
+            return <option key={index}>{item}</option>;
+          })}
+        {doorsData &&
+          doorsData.length > 0 &&
+          doorsData?.map((item: number, index) => {
+            return <option key={index}>{item}</option>;
+          })}
       </select>
     </div>
   );
